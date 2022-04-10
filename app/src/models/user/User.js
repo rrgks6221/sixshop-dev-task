@@ -3,6 +3,7 @@
 const UserModule = require('./UserModule');
 const UserStorage = require('./UserStorage');
 const Error = require('../../utils/Error');
+const Auth = require('../../utils/Auth');
 const validation = require('../../utils/validation');
 const makeResponse = require('../../utils/makeResponse');
 
@@ -61,6 +62,36 @@ class User {
 
       if (isCreate) return makeResponse(201, '회원가입이 되었습니다.');
       return makeResponse(400, '회원가입에 실패하였습니다.');
+    } catch (err) {
+      return Error.ctrl(err);
+    }
+  }
+
+  async signIn() {
+    const { id, password } = this.body;
+
+    try {
+      const userInfo = await UserStorage.findOneById(id);
+
+      if (!userInfo) {
+        return makeResponse(
+          400,
+          '존재하지 않는 아이디이거나 비밀번호가 일치하지 않습니다.'
+        );
+      }
+
+      const isSame = UserModule.comparePassword(password, userInfo.password);
+
+      if (!isSame) {
+        return makeResponse(
+          400,
+          '존재하지 않는 아이디이거나 비밀번호가 일치하지 않습니다.'
+        );
+      }
+
+      const jwt = await Auth.createJWT(userInfo);
+
+      return makeResponse(200, 'sdkfns', { jwt });
     } catch (err) {
       return Error.ctrl(err);
     }

@@ -10,6 +10,13 @@ const process = {
 
     return processCtrl(res, response);
   },
+
+  signIn: async (req, res) => {
+    const user = new User(req);
+    const response = await user.signIn();
+
+    return processCtrl(res, response);
+  },
 };
 
 module.exports = process;

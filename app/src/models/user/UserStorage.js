@@ -9,7 +9,7 @@ class UserStorage {
     try {
       conn = await mariadb.getConnection();
 
-      const query = `SELECT id FROM stores WHERE id = ?;`;
+      const query = `SELECT * FROM stores WHERE id = ?;`;
 
       const existId = await conn.query(query, [id]);
 

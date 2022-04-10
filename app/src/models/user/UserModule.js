@@ -7,6 +7,10 @@ class UserModule {
 
     return !EMAIL_REG_EXP.test(email);
   }
+
+  static comparePassword(inputPassword, storedPassword) {
+    return inputPassword === storedPassword;
+  }
 }
 
 module.exports = UserModule;
