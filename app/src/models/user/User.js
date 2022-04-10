@@ -10,6 +10,7 @@ const makeResponse = require('../../utils/makeResponse');
 class User {
   constructor(req) {
     this.body = req.body;
+    this.auth = req.auth;
   }
 
   async signUp() {
@@ -92,6 +93,17 @@ class User {
       const jwt = await Auth.createJWT(userInfo);
 
       return makeResponse(200, 'sdkfns', { jwt });
+    } catch (err) {
+      return Error.ctrl(err);
+    }
+  }
+
+  async resign() {
+    try {
+      const isDelete = await UserStorage.deleteOneById(this.auth.id);
+
+      if (isDelete) return makeResponse(200, '회원 탈퇴 되었습니다.');
+      return makeResponse(400, '회원 탈퇴에 실패하였습니다.');
     } catch (err) {
       return Error.ctrl(err);
     }

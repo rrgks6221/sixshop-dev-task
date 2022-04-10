@@ -79,6 +79,24 @@ class UserStorage {
       conn?.release();
     }
   }
+
+  static async deleteOneById(id) {
+    let conn;
+
+    try {
+      conn = await mariadb.getConnection();
+
+      const query = `DELETE FROM stores WHERE id = ?;`;
+
+      const user = await conn.query(query, [id]);
+
+      return user.affectedRows;
+    } catch (err) {
+      throw err;
+    } finally {
+      conn?.release();
+    }
+  }
 }
 
 module.exports = UserStorage;
