@@ -12,6 +12,8 @@ class User {
   }
 
   async signUp() {
+    const { id, email, storeName } = this.body;
+
     const isValidation = validation(Object.keys(this.body), this.body);
 
     if (!isValidation.success) {
@@ -21,14 +23,14 @@ class User {
       );
     }
 
-    const emailCheck = UserModule.emailFormatCheck(this.body.email);
+    const emailCheck = UserModule.emailFormatCheck(email);
 
     if (emailCheck) {
       return makeResponse(400, '이메일 형식이 맞지 않습니다.');
     }
 
     try {
-      const existId = await UserStorage.findOneById(this.body.id);
+      const existId = await UserStorage.findOneById(id);
 
       if (existId) {
         return makeResponse(
@@ -37,7 +39,7 @@ class User {
         );
       }
 
-      const existEmail = await UserStorage.findOneByEmail(this.body.email);
+      const existEmail = await UserStorage.findOneByEmail(email);
 
       if (existEmail) {
         return makeResponse(
@@ -46,9 +48,7 @@ class User {
         );
       }
 
-      const existStoreName = await UserStorage.findOneByStoreName(
-        this.body.storeName
-      );
+      const existStoreName = await UserStorage.findOneByStoreName(storeName);
 
       if (existStoreName) {
         return makeResponse(
