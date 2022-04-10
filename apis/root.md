@@ -178,7 +178,7 @@
 
 - Request
 
-**URL :/api/resign/:stroeName** ex)`/api/resign/temp` <br>
+**URL :/api/resign** ex)`/api/resign` <br>
 **Method :DELETE** <br>
 
 <br>
@@ -230,7 +230,7 @@
 // id가 존재하지 않을 때
 {
   "success": false,
-  "msg": "존재하지 않는 아이디입니다.",
+  "msg": "회원 탈퇴에 실패하였습니다.",
   "status": 400,
 }
 ```

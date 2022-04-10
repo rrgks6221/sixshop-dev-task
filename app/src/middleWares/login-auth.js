@@ -3,7 +3,7 @@
 const Auth = require('../utils/Auth');
 
 const loginCheck = async (req, res, next) => {
-  let token = req.headers['authorization'] || '';
+  const token = req.headers['authorization'].slice(7) || '';
 
   if (token.length === 0) {
     return res.status(401).json({
@@ -11,8 +11,6 @@ const loginCheck = async (req, res, next) => {
       msg: 'JWT 토큰이 존재하지 않습니다. 로그인 후 이용해주세요.',
     });
   }
-
-  token = token.slice(7);
 
   const auth = await Auth.verifyJWT(token);
 
