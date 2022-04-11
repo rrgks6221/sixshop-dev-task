@@ -5,6 +5,6 @@ const ctrl = require('./store.ctrl');
 
 const router = express.Router();
 
-router.get('/:storeName/sign-up', ctrl.signUp);
+router.get('/:storeName/sign-up', ctrl.findOneFlagByName);
 
 module.exports = router;

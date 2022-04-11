@@ -9,7 +9,7 @@ class Customer {
     this.params = req.params;
   }
 
-  async signUp() {
+  async findOneFlagByName() {
     try {
       const flag = await CustomerStorage.findOneFlagByName(
         this.params.storeName
@@ -20,7 +20,7 @@ class Customer {
       }
       return makeResponse(200, 'sdfgjn', { flag });
     } catch (err) {
-      Error.ctrl(err);
+      return Error.ctrl(err);
     }
   }
 }
