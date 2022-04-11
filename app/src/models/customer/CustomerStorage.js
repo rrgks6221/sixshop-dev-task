@@ -27,7 +27,9 @@ class CustomerStorage {
     try {
       conn = await mariadb.getConnection();
 
-      const query = `SELECT * FROM customer_use_flags WHERE store_id = ?`;
+      const query = `SELECT customer_id AS customerId, phone_number AS phoneNumber, adress, birth_date AS birthDate, gender, recommender
+      FROM customer_use_flags
+      WHERE store_id = ?;`;
 
       const flag = await conn.query(query, [name]);
 
