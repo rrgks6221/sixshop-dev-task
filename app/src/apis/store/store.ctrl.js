@@ -17,6 +17,13 @@ const process = {
 
     return processCtrl(res, response);
   },
+
+  signIn: async (req, res) => {
+    const customer = new Customer(req);
+    const response = await customer.signIn();
+
+    return processCtrl(res, response);
+  },
 };
 
 module.exports = process;

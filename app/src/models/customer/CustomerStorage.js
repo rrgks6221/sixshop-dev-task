@@ -94,6 +94,28 @@ class CustomerStorage {
     }
   }
 
+  static async findOneSignedCustomer(id) {
+    let conn;
+
+    try {
+      conn = await mariadb.getConnection();
+
+      const query = `SELECT customers.id, customers.name, customers.password FROM customers
+      JOIN customer_custom_models
+      WHERE email = ?
+      OR
+      customer_custom_models.login_id = ?;`;
+
+      const customer = await conn.query(query, [id, id]);
+
+      return customer[0];
+    } catch (err) {
+      throw err;
+    } finally {
+      conn?.release();
+    }
+  }
+
   static async findOneFlagByName(name) {
     let conn;
 

@@ -1,5 +1,6 @@
 'use strict';
 
+const Auth = require('../../utils/Auth');
 const Error = require('../../utils/Error');
 const getUuid = require('../../utils/getUuid');
 const makeResponse = require('../../utils/makeResponse');
@@ -77,6 +78,39 @@ class Customer {
         return makeResponse(400, '회원가입에 실패했습니다.');
       }
       return makeResponse(201, '회원가입에 성공했습니다.');
+    } catch (err) {
+      return Error.ctrl(err);
+    }
+  }
+
+  async signIn() {
+    const isValidation = validation(['id', 'password'], this.body);
+
+    if (!isValidation.success) {
+      return makeResponse(400, `${isValidation.emptyKey}를 입력해주세요`);
+    }
+
+    try {
+      const customer = await CustomerStorage.findOneSignedCustomer(
+        this.body.id
+      );
+
+      if (!customer) {
+        return makeResponse(400, '존재하지 않는 회원입니다.');
+      }
+
+      const isCompare = CustomerModule.comparePassword(
+        this.body.password,
+        customer.password
+      );
+
+      if (!isCompare) {
+        return makeResponse(400, '비밀번호가 틀렸습니다.');
+      }
+
+      const jwt = await Auth.createJWT(customer);
+
+      return makeResponse(200, '로그인 되었습니다.', { jwt });
     } catch (err) {
       return Error.ctrl(err);
     }
