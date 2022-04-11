@@ -13,7 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const root = require('../app/src/apis/root');
+const store = require('../app/src/apis/store');
 
-app.use('/', root);
+app.use('/api', root);
+app.use('/api/store', store);
 
 module.exports = app;
