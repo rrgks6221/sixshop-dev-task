@@ -24,6 +24,13 @@ const process = {
 
     return processCtrl(res, response);
   },
+
+  resign: async (req, res) => {
+    const customer = new Customer(req);
+    const response = await customer.resign();
+
+    return processCtrl(res, response);
+  },
 };
 
 module.exports = process;

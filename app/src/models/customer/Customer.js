@@ -12,6 +12,7 @@ class Customer {
   constructor(req) {
     this.body = req.body;
     this.params = req.params;
+    this.auth = req.auth;
   }
 
   async findOneFlagByName() {
@@ -111,6 +112,17 @@ class Customer {
       const jwt = await Auth.createJWT(customer);
 
       return makeResponse(200, '로그인 되었습니다.', { jwt });
+    } catch (err) {
+      return Error.ctrl(err);
+    }
+  }
+
+  async resign() {
+    try {
+      const isDelete = await CustomerStorage.deleteOneById(this.auth.id);
+
+      if (isDelete) return makeResponse(200, '회원 탈퇴 되었습니다.');
+      return makeResponse(400, '회원 탈퇴에 실패하였습니다.');
     } catch (err) {
       return Error.ctrl(err);
     }
