@@ -102,7 +102,7 @@ class User {
 
       const jwt = await Auth.createJWT(userInfo);
 
-      return makeResponse(200, 'sdkfns', { jwt });
+      return makeResponse(200, '로그인 되었습니다.', { jwt });
     } catch (err) {
       return Error.ctrl(err);
     }

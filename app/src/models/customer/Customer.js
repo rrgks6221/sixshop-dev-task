@@ -76,7 +76,7 @@ class Customer {
       if (!isCreatecustomModel) {
         return makeResponse(400, '회원가입에 실패했습니다.');
       }
-      return makeResponse(200, '회원가입에 성공했습니다.');
+      return makeResponse(201, '회원가입에 성공했습니다.');
     } catch (err) {
       return Error.ctrl(err);
     }
