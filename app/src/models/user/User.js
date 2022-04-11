@@ -6,6 +6,8 @@ const Error = require('../../utils/Error');
 const Auth = require('../../utils/Auth');
 const validation = require('../../utils/validation');
 const makeResponse = require('../../utils/makeResponse');
+const CustomerStorage = require('../customer/CustomerStorage');
+const getUuid = require('../../utils/getUuid');
 
 class User {
   constructor(req) {
@@ -61,9 +63,18 @@ class User {
 
       const isCreate = await UserStorage.createUser(this.body);
 
-      if (isCreate) return makeResponse(201, '회원가입이 되었습니다.');
+      if (!isCreate) {
+        return makeResponse(400, '회원가입에 실패하였습니다.');
+      }
+
+      const uuid = getUuid();
+
+      const storeCreate = await CustomerStorage.createCustomerUseFlag(uuid, id);
+
+      if (storeCreate) return makeResponse(201, '회원가입이 되었습니다.');
       return makeResponse(400, '회원가입에 실패하였습니다.');
     } catch (err) {
+      console.log(err);
       return Error.ctrl(err);
     }
   }
