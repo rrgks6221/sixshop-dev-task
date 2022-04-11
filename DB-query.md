@@ -31,24 +31,40 @@
     CONSTRAINT customers_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE
   );
 
-  CREATE TABLE customer_models (
+  CREATE TABLE customer_use_flags (
+    id VARCHAR(255) NOT NULL,
+    store_id VARCHAR(255) NOT NUll,
+    login_id TINYINT,
+    phone_number TINYINT,
+    address TINYINT,
+    birth_date DATE,
+    gender TINYINT,
+    recommender TINYINT,
+    reserve TINYINT,
+    purchase_count TINYINT,
+    purchase_amount TINYINT,
+
+    PRIMARY KEY (id),
+    CONSTRAINT customer_use_flags_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE
+  );
+
+  CREATE TABLE customer_custom_models (
     id VARCHAR(255) NOT NULL,
     store_id VARCHAR(255) NOT NULL,
     customer_id VARCHAR(255) NOT NULL,
+    login_id VARCHAR(255),
+    phone_number INT,
+    address VARCHAR(255),
+    birth_date DATE,
+    gender TINYINT,
+    recommender VARCHAR(255),
+    reserve INT,
+    purchase_count INT,
+    purchase_amount INT,
 
     PRIMARY KEY (id),
-    CONSTRAINT customer_models_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT customer_models_fk2 FOREIGN KEY (customer_id) REFERENCES customers (id) ON UPDATE CASCADE ON DELETE CASCADE
-  );
-
-  CREATE TABLE add_customers (
-    id VARCHAR(255) NOT NULL,
-    customer_model_id VARCHAR(255) NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-
-    PRIMARY KEY (id),
-    CONSTRAINT add_customers_fk1 FOREIGN KEY (customer_model_id) REFERENCES customer_models (id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT customer_custom_models_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT customer_custom_models_fk2 FOREIGN KEY (customer_id) REFERENCES customers (id) ON UPDATE CASCADE ON DELETE CASCADE
   );
 
   -- 상품
