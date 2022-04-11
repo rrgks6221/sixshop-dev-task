@@ -31,6 +31,13 @@ const process = {
 
     return processCtrl(res, response);
   },
+
+  updatePassword: async (req, res) => {
+    const customer = new Customer(req);
+    const response = await customer.updatePassword();
+
+    return processCtrl(res, response);
+  },
 };
 
 module.exports = process;

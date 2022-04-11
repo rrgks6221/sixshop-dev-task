@@ -11,6 +11,8 @@ router.get('/:storeName/essential', ctrl.findOneFlagByName);
 router.post('/:storeName/sign-up', ctrl.signUp);
 router.post('/:storeName/sign-in', ctrl.signIn);
 
+router.patch('/:storeName/privacy/password', loginCheck, ctrl.updatePassword);
+
 router.delete('/:storeName/resign', loginCheck, ctrl.resign);
 
 module.exports = router;

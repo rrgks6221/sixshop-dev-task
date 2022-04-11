@@ -127,6 +127,20 @@ class Customer {
       return Error.ctrl(err);
     }
   }
+
+  async updatePassword() {
+    try {
+      const isUpdate = await CustomerStorage.updatePassword(
+        this.auth.id,
+        this.body.password
+      );
+
+      if (isUpdate) return makeResponse(200, '비밀번호가 변경되었습니다.');
+      return makeResponse(400, '비밀번호 변경에 실패했습니다.');
+    } catch (err) {
+      Error.ctrl(err);
+    }
+  }
 }
 
 module.exports = Customer;

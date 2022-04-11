@@ -136,6 +136,24 @@ class CustomerStorage {
     }
   }
 
+  static async updatePassword(id, password) {
+    let conn;
+
+    try {
+      conn = await mariadb.getConnection();
+
+      const query = `UPDATE customers SET password = ? WHERE id = ?;`;
+
+      const isUpdate = await conn.query(query, [password, id]);
+
+      return isUpdate.affectedRows;
+    } catch (err) {
+      throw err;
+    } finally {
+      conn.release();
+    }
+  }
+
   static async deleteOneById(id) {
     let conn;
 
