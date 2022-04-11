@@ -8,7 +8,12 @@ const process = {
     const customer = new Customer(req);
     const response = await customer.findOneFlagByName();
 
-    console.log(response);
+    return processCtrl(res, response);
+  },
+
+  signUp: async (req, res) => {
+    const customer = new Customer(req);
+    const response = await customer.signUp();
 
     return processCtrl(res, response);
   },

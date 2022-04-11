@@ -74,7 +74,6 @@ class User {
       if (storeCreate) return makeResponse(201, '회원가입이 되었습니다.');
       return makeResponse(400, '회원가입에 실패하였습니다.');
     } catch (err) {
-      console.log(err);
       return Error.ctrl(err);
     }
   }
