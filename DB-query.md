@@ -5,7 +5,7 @@
 <br>
 
 ```sql
-  CREATE DATABASE `six_shop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+  CREATE DATABASE `six_shop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
   USE six_shop;
 
@@ -37,7 +37,7 @@
     login_id TINYINT DEFAULT 0 NOT NULL,
     phone_number TINYINT DEFAULT 0 NOT NULL,
     address TINYINT DEFAULT 0 NOT NULL,
-    birth_date DATE DEFAULT 0 NOT NULL,
+    birth_date TINYINT DEFAULT 0 NOT NULL,
     gender TINYINT DEFAULT 0 NOT NULL,
     recommender TINYINT DEFAULT 0 NOT NULL,
     reserve TINYINT DEFAULT 0 NOT NULL,
@@ -58,9 +58,9 @@
     birth_date DATE,
     gender TINYINT,
     recommender VARCHAR(255),
-    reserve INT,
-    purchase_count INT,
-    purchase_amount INT,
+    reserve INT DEFAULT 0 NOT NULL,
+    purchase_count INT DEFAULT 0 NOT NULL,
+    purchase_amount INT DEFAULT 0 NOT NULL,
 
     PRIMARY KEY (id),
     CONSTRAINT customer_custom_models_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE,
