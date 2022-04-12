@@ -3,7 +3,7 @@
 const Auth = require('../utils/Auth');
 
 const loginCheck = async (req, res, next) => {
-  const token = req.headers['authorization'].slice(7) || '';
+  const token = req.headers['authorization'] || '';
 
   if (token.length === 0) {
     return res.status(401).json({
@@ -12,7 +12,7 @@ const loginCheck = async (req, res, next) => {
     });
   }
 
-  const auth = await Auth.verifyJWT(token);
+  const auth = await Auth.verifyJWT(token.slice(7));
 
   if (auth.err === 'jwt expired') {
     return res.status(401).json({

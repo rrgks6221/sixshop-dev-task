@@ -5,7 +5,7 @@
 <br>
 
 ```sql
-  CREATE DATABASE `six_shop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+  CREATE DATABASE `six_shop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
   USE six_shop;
 
@@ -31,24 +31,40 @@
     CONSTRAINT customers_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE
   );
 
-  CREATE TABLE customer_models (
+  CREATE TABLE customer_use_flags (
+    id VARCHAR(255) NOT NULL,
+    store_id VARCHAR(255) NOT NUll,
+    login_id TINYINT DEFAULT 0 NOT NULL,
+    phone_number TINYINT DEFAULT 0 NOT NULL,
+    address TINYINT DEFAULT 0 NOT NULL,
+    birth_date TINYINT DEFAULT 0 NOT NULL,
+    gender TINYINT DEFAULT 0 NOT NULL,
+    recommender TINYINT DEFAULT 0 NOT NULL,
+    reserve TINYINT DEFAULT 0 NOT NULL,
+    purchase_count TINYINT DEFAULT 0 NOT NULL,
+    purchase_amount TINYINT DEFAULT 0 NOT NULL,
+
+    PRIMARY KEY (id),
+    CONSTRAINT customer_use_flags_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE
+  );
+
+  CREATE TABLE customer_custom_models (
     id VARCHAR(255) NOT NULL,
     store_id VARCHAR(255) NOT NULL,
     customer_id VARCHAR(255) NOT NULL,
+    login_id VARCHAR(255),
+    phone_number INT,
+    address VARCHAR(255),
+    birth_date DATE,
+    gender TINYINT,
+    recommender VARCHAR(255),
+    reserve INT DEFAULT 0 NOT NULL,
+    purchase_count INT DEFAULT 0 NOT NULL,
+    purchase_amount INT DEFAULT 0 NOT NULL,
 
     PRIMARY KEY (id),
-    CONSTRAINT customer_models_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT customer_models_fk2 FOREIGN KEY (customer_id) REFERENCES customers (id) ON UPDATE CASCADE ON DELETE CASCADE
-  );
-
-  CREATE TABLE add_customers (
-    id VARCHAR(255) NOT NULL,
-    customer_model_id VARCHAR(255) NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
-
-    PRIMARY KEY (id),
-    CONSTRAINT add_customers_fk1 FOREIGN KEY (customer_model_id) REFERENCES customer_models (id) ON UPDATE CASCADE ON DELETE CASCADE
+    CONSTRAINT customer_custom_models_fk1 FOREIGN KEY (store_id) REFERENCES stores (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT customer_custom_models_fk2 FOREIGN KEY (customer_id) REFERENCES customers (id) ON UPDATE CASCADE ON DELETE CASCADE
   );
 
   -- 상품

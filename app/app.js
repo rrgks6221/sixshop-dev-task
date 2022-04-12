@@ -13,7 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const root = require('../app/src/apis/root');
+const store = require('../app/src/apis/store');
+const dashBoard = require('../app/src/apis/dash-board');
 
-app.use('/', root);
+app.use('/api', root);
+app.use('/api/store', store);
+app.use('/api/dash-board', dashBoard);
 
 module.exports = app;
