@@ -7,6 +7,7 @@ const ctrl = require('./store.ctrl');
 const router = express.Router();
 
 router.get('/:storeName/essential', ctrl.findOneFlagByName);
+router.get('/:storeName/password', loginCheck, ctrl.findOnePasswordById);
 
 router.post('/:storeName/sign-up', ctrl.signUp);
 router.post('/:storeName/sign-in', ctrl.signIn);

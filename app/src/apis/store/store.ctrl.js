@@ -11,6 +11,13 @@ const process = {
     return processCtrl(res, response);
   },
 
+  findOnePasswordById: async (req, res) => {
+    const customer = new Customer(req);
+    const response = await customer.findOnePasswordById();
+
+    return processCtrl(res, response);
+  },
+
   signUp: async (req, res) => {
     const customer = new Customer(req);
     const response = await customer.signUp();

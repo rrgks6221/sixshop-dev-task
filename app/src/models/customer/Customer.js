@@ -30,6 +30,16 @@ class Customer {
     }
   }
 
+  async findOnePasswordById() {
+    try {
+      const password = await CustomerStorage.findOnePasswordById(this.auth.id);
+
+      return makeResponse(200, '비밀번호 찾기 성공', { password });
+    } catch (err) {
+      return Error.ctrl(err);
+    }
+  }
+
   async signUp() {
     try {
       const flag = await CustomerStorage.findOneFlagByName(

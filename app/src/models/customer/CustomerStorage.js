@@ -136,6 +136,24 @@ class CustomerStorage {
     }
   }
 
+  static async findOnePasswordById(id) {
+    let conn;
+
+    try {
+      conn = await mariadb.getConnection();
+
+      const query = `SELECT password FROM customers WHERE id = ?`;
+
+      const customer = await conn.query(query, [id]);
+
+      return customer[0].password;
+    } catch (err) {
+      throw err;
+    } finally {
+      conn?.release();
+    }
+  }
+
   static async updatePassword(id, password) {
     let conn;
 
