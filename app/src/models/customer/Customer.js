@@ -144,6 +144,41 @@ class Customer {
     }
   }
 
+  async updateCustomerUseFlag() {
+    const isValidation = validation(
+      [
+        'loginId',
+        'phoneNumber',
+        'address',
+        'birthDate',
+        'gender',
+        'recommender',
+        'reserve',
+        'purchaseCount',
+        'purchaseAmount',
+      ],
+      this.body
+    );
+
+    if (!isValidation.success) {
+      return makeResponse(400, `${isValidation.emptyKey}를 입력해주세요`);
+    }
+
+    try {
+      const isUpdate = await CustomerStorage.updateCustomerUseFlag(
+        this.auth.id,
+        this.body
+      );
+
+      if (isUpdate) {
+        return makeResponse(200, '사용자 정의 필드 수정 성공');
+      }
+      return makeResponse(400, '사용자 정의 필드 수정 실패');
+    } catch (err) {
+      return Error.ctrl(err);
+    }
+  }
+
   async updatePassword() {
     try {
       const isUpdate = await CustomerStorage.updatePassword(

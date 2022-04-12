@@ -172,6 +172,45 @@ class CustomerStorage {
     }
   }
 
+  static async updateCustomerUseFlag(id, flags) {
+    let conn;
+
+    try {
+      conn = await mariadb.getConnection();
+
+      const query = `UPDATE customer_use_flags SET
+      login_id = ?,
+      phone_number = ?,
+      address = ?,
+      birth_date = ?,
+      gender = ?,
+      recommender = ?,
+      reserve = ?,
+      purchase_count = ?,
+      purchase_amount = ?
+      WHERE store_id = ?;`;
+
+      const isUpdate = await conn.query(query, [
+        flags.loginId,
+        flags.phoneNumber,
+        flags.address,
+        flags.birthDate,
+        flags.gender,
+        flags.recommender,
+        flags.reserve,
+        flags.purchaseCount,
+        flags.purchaseAmount,
+        id,
+      ]);
+
+      return isUpdate.affectedRows;
+    } catch (err) {
+      throw err;
+    } finally {
+      conn.release();
+    }
+  }
+
   static async updateCustomerBasic(id, userInfo) {
     let conn;
 
