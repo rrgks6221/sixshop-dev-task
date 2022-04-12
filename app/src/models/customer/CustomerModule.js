@@ -1,10 +1,10 @@
 'use strict';
 
 class CustomerModule {
-  static getEssential(flag) {
+  static getEssential(flag, add = ['storeName', 'name', 'email', 'password']) {
     const essential = Object.keys(flag).filter((key) => flag[key] === 1);
 
-    essential.push('storeName', 'name', 'email', 'password');
+    essential.push(...add);
 
     return essential;
   }

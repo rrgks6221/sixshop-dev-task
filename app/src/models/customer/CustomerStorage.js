@@ -76,15 +76,15 @@ class CustomerStorage {
     }
   }
 
-  static async findOneCustomerByEmail(email) {
+  static async findOneCustomerByEmail(email, id) {
     let conn;
 
     try {
       conn = await mariadb.getConnection();
 
-      const query = `SELECT * FROM customers WHERE email = ?;`;
+      const query = `SELECT * FROM customers WHERE email = ? AND id != ?;`;
 
-      const customer = await conn.query(query, [email]);
+      const customer = await conn.query(query, [email, id]);
 
       return customer[0];
     } catch (err) {
@@ -145,6 +145,57 @@ class CustomerStorage {
       const query = `UPDATE customers SET password = ? WHERE id = ?;`;
 
       const isUpdate = await conn.query(query, [password, id]);
+
+      return isUpdate.affectedRows;
+    } catch (err) {
+      throw err;
+    } finally {
+      conn.release();
+    }
+  }
+
+  static async updateCustomerBasic(id, userInfo) {
+    let conn;
+
+    try {
+      conn = await mariadb.getConnection();
+
+      const query = `UPDATE customers SET name = ?, email = ? WHERE id = ?;`;
+
+      const isUpdate = await conn.query(query, [
+        userInfo.name,
+        userInfo.email,
+        id,
+      ]);
+
+      return isUpdate.affectedRows;
+    } catch (err) {
+      throw err;
+    } finally {
+      conn.release();
+    }
+  }
+
+  static async updateCustomerCustom(id, userInfo) {
+    let conn;
+
+    try {
+      conn = await mariadb.getConnection();
+
+      const query = `UPDATE customer_custom_models SET 
+      phone_number = ?,
+      address = ?,
+      birth_date = ?,
+      gender = ?
+      WHERE id = ?;`;
+
+      const isUpdate = await conn.query(query, [
+        userInfo.phoneNumber || null,
+        userInfo.address || null,
+        userInfo.birthDate || null,
+        userInfo.gender || null,
+        id,
+      ]);
 
       return isUpdate.affectedRows;
     } catch (err) {

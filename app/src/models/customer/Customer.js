@@ -51,6 +51,12 @@ class Customer {
         );
       }
 
+      const emailCheck = CustomerModule.emailFormatCheck(email);
+
+      if (emailCheck) {
+        return makeResponse(400, '이메일 형식이 맞지 않습니다.');
+      }
+
       const signedCustomer = await CustomerStorage.findOneCustomerByEmail(
         this.body.email
       );
@@ -139,6 +145,65 @@ class Customer {
       return makeResponse(400, '비밀번호 변경에 실패했습니다.');
     } catch (err) {
       Error.ctrl(err);
+    }
+  }
+
+  async updatePrivacy() {
+    try {
+      const flag = await CustomerStorage.findOneFlagByName(
+        this.params.storeName
+      );
+
+      if (!flag) {
+        return makeResponse(404, '해당 상점이 존재하지 않습니다.');
+      }
+
+      const essential = CustomerModule.getEssential(flag, ['name', 'email']);
+
+      const isValidation = validation(essential, this.body);
+
+      if (!isValidation.success) {
+        return makeResponse(
+          400,
+          `${isValidation.emptyKey}은(는) 필수로 입력해야 합니다.`
+        );
+      }
+
+      const emailCheck = CustomerModule.emailFormatCheck(this.body.email);
+
+      if (emailCheck) {
+        return makeResponse(400, '이메일 형식이 맞지 않습니다.');
+      }
+
+      const signedCustomer = await CustomerStorage.findOneCustomerByEmail(
+        this.body.email,
+        this.auth.id
+      );
+
+      if (signedCustomer) {
+        return makeResponse(409, '해당 이메일은 다른 사용자가 사용 중 입니다.');
+      }
+
+      const isBasicUpdate = await CustomerStorage.updateCustomerBasic(
+        this.auth.id,
+        this.body
+      );
+
+      if (!isBasicUpdate) {
+        return makeResponse(400, '개인정보 수정에 실패했습니다.');
+      }
+
+      const isCustomUpdate = await CustomerStorage.updateCustomerCustom(
+        this.auth.id,
+        this.body
+      );
+
+      if (!isCustomUpdate) {
+        return makeResponse(400, '개인정보 수정에 실패했습니다.');
+      }
+      return makeResponse(200, '개인정보가 수정되었습니다.');
+    } catch (err) {
+      return Error.ctrl(err);
     }
   }
 }

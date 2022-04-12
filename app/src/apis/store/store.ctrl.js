@@ -38,6 +38,13 @@ const process = {
 
     return processCtrl(res, response);
   },
+
+  updatePrivacy: async (req, res) => {
+    const customer = new Customer(req);
+    const response = await customer.updatePrivacy();
+
+    return processCtrl(res, response);
+  },
 };
 
 module.exports = process;
