@@ -76,15 +76,15 @@ class CustomerStorage {
     }
   }
 
-  static async findOneCustomerByEmail(email, id) {
+  static async findOneCustomerByEmail(email) {
     let conn;
 
     try {
       conn = await mariadb.getConnection();
 
-      const query = `SELECT * FROM customers WHERE email = ? AND id != ?;`;
+      const query = `SELECT * FROM customers WHERE email = ?;`;
 
-      const customer = await conn.query(query, [email, id]);
+      const customer = await conn.query(query, [email]);
 
       return customer[0];
     } catch (err) {

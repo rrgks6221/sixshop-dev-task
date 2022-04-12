@@ -50,18 +50,22 @@ class Customer {
         return makeResponse(404, '해당 상점이 존재하지 않습니다.');
       }
 
-      const essential = CustomerModule.getEssential(flag);
+      const essential = CustomerModule.getEssential(flag, [
+        'name',
+        'email',
+        'password',
+      ]);
 
       const isValidation = validation(essential, this.body);
 
-      if (isValidation.success) {
+      if (!isValidation.success) {
         return makeResponse(
           400,
           `${isValidation.emptyKey}은(는) 필수로 입력해야 합니다.`
         );
       }
 
-      const emailCheck = CustomerModule.emailFormatCheck(email);
+      const emailCheck = CustomerModule.emailFormatCheck(this.body.email);
 
       if (emailCheck) {
         return makeResponse(400, '이메일 형식이 맞지 않습니다.');
@@ -96,6 +100,7 @@ class Customer {
       }
       return makeResponse(201, '회원가입에 성공했습니다.');
     } catch (err) {
+      console.log(err);
       return Error.ctrl(err);
     }
   }
